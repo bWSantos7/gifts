@@ -2,6 +2,8 @@ import Image from "next/image";
 import { signOut } from "@/lib/auth";
 import { AdminNav } from "@/components/admin/AdminNav";
 
+export const dynamic = "force-dynamic";
+
 export default function AdminDashboardLayout({
   children,
 }: {
