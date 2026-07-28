@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  createdAt    DateTime @default(now())
+}
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  order     Int      @default(0)
+  gifts     Gift[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Gift {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  price       Decimal? @db.Decimal(10, 2)
+  imageKey    String?
+  purchaseUrl String
+  storeName   String?
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+
+  // Reserva de presente por convidado (sem login)
+  reservedByName String?
+  reservedByIp   String?
+  reservedAt     DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+  @@index([isActive, order])
+}
+
+model GalleryPhoto {
+  id        String   @id @default(cuid())
+  imageKey  String
+  caption   String?
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model SiteSettings {
+  id             String   @id @default("singleton")
+  coupleName     String   @default("Noivos")
+  welcomeMessage String   @default("")
+  footerMessage  String   @default("")
+  weddingDate    DateTime
+  heroImageKey   String?
+  updatedAt      DateTime @updatedAt
+}
