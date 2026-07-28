@@ -10,7 +10,7 @@ import { Gallery } from "@/components/home/Gallery";
 import { GiftList } from "@/components/gifts/GiftList";
 import type { GiftDTO } from "@/types";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
