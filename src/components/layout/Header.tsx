@@ -5,16 +5,16 @@ import { ShareListButton } from "@/components/gifts/ShareListButton";
 export function Header({ coupleName }: { coupleName: string }) {
   return (
     <header className="sticky top-0 z-20 border-b border-wine-100 bg-background/90 backdrop-blur-sm">
-      <div className="mx-auto grid max-w-6xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-2">
+      <div className="relative mx-auto flex max-w-6xl items-center justify-between px-4 py-2">
         <Link href="/" className="flex items-center">
           <Image src="/img/monogram.png" alt={coupleName} width={46} height={64} priority />
         </Link>
 
-        <span className="truncate text-center font-display text-base text-wine-700 sm:text-lg">
+        <span className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-display text-lg text-wine-700 lg:block">
           {coupleName}
         </span>
 
-        <nav className="flex items-center gap-4 justify-self-end">
+        <nav className="flex items-center gap-4">
           <Link
             href="#presentes"
             className="hidden text-sm font-medium text-ink/70 transition-colors hover:text-wine-500 sm:inline"
