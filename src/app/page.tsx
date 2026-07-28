@@ -48,6 +48,7 @@ export default async function HomePage() {
     storeName: gift.storeName,
     order: gift.order,
     isActive: gift.isActive,
+    audience: gift.audience,
     categoryId: gift.categoryId,
     categoryName: gift.category.name,
     categorySlug: gift.category.slug,

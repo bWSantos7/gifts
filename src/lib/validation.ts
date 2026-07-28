@@ -1,7 +1,15 @@
 import { z } from "zod";
 
+export const STORE_OPTIONS = ["Mercado Livre", "Amazon", "Shein", "Shopee", "Outros"] as const;
+
+export const GIFT_AUDIENCES = ["GUESTS", "GODPARENTS"] as const;
+
 export const reserveGiftSchema = z.object({
   name: z.string().trim().min(2, "Informe seu nome completo").max(80),
+});
+
+export const fetchProductSchema = z.object({
+  url: z.string().trim().url("Informe um link válido"),
 });
 
 export const giftSchema = z.object({
@@ -12,6 +20,7 @@ export const giftSchema = z.object({
   purchaseUrl: z.string().trim().url("Informe um link válido"),
   storeName: z.string().trim().max(60).optional().or(z.literal("")),
   categoryId: z.string().trim().min(1, "Selecione uma categoria"),
+  audience: z.enum(GIFT_AUDIENCES).optional(),
   order: z.coerce.number().int().optional(),
   isActive: z.coerce.boolean().optional(),
 });

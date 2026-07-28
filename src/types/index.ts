@@ -1,3 +1,5 @@
+export type GiftAudience = "GUESTS" | "GODPARENTS";
+
 export type GiftDTO = {
   id: string;
   name: string;
@@ -8,6 +10,7 @@ export type GiftDTO = {
   storeName: string | null;
   order: number;
   isActive: boolean;
+  audience: GiftAudience;
   categoryId: string;
   categoryName: string;
   categorySlug: string;

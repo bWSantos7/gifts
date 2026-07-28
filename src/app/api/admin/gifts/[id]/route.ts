@@ -33,6 +33,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       ...(data.purchaseUrl !== undefined && { purchaseUrl: data.purchaseUrl }),
       ...(data.storeName !== undefined && { storeName: data.storeName || null }),
       ...(data.categoryId !== undefined && { categoryId: data.categoryId }),
+      ...(data.audience !== undefined && { audience: data.audience }),
       ...(data.order !== undefined && { order: data.order }),
       ...(data.isActive !== undefined && { isActive: data.isActive }),
       ...(releaseReservation && { reservedByName: null, reservedByIp: null, reservedAt: null }),

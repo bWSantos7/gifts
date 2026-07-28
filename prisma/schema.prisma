@@ -21,6 +21,11 @@ model Admin {
   createdAt    DateTime @default(now())
 }
 
+enum GiftAudience {
+  GUESTS
+  GODPARENTS
+}
+
 model Category {
   id        String   @id @default(cuid())
   name      String
@@ -39,10 +44,11 @@ model Gift {
   imageKey    String?
   purchaseUrl String
   storeName   String?
-  order       Int      @default(0)
-  isActive    Boolean  @default(true)
+  order       Int          @default(0)
+  isActive    Boolean      @default(true)
+  audience    GiftAudience @default(GUESTS)
   categoryId  String
-  category    Category @relation(fields: [categoryId], references: [id])
+  category    Category     @relation(fields: [categoryId], references: [id])
 
   // Reserva de presente por convidado (sem login)
   reservedByName String?
@@ -54,6 +60,7 @@ model Gift {
 
   @@index([categoryId])
   @@index([isActive, order])
+  @@index([audience])
 }
 
 model GalleryPhoto {

@@ -107,7 +107,7 @@ export function GiftCard({
           ) : (
             <>
               <ButtonLink href={gift.purchaseUrl} target="_blank" className="flex-1 justify-center">
-                Comprar{gift.storeName ? ` na ${gift.storeName}` : ""}
+                Comprar{gift.storeName && gift.storeName !== "Outros" ? ` na ${gift.storeName}` : ""}
               </ButtonLink>
             </>
           )}
