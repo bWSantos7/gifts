@@ -19,7 +19,6 @@ export const metadata: Metadata = {
     template: "%s | K & B",
   },
   description: "Lista de presentes de casamento de K & B.",
-  icons: { icon: "/icon.jpg" },
 };
 
 export default function RootLayout({
