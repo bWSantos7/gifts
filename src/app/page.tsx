@@ -65,7 +65,6 @@ export default async function HomePage() {
           welcomeMessage={settings.welcomeMessage}
           weddingDate={settings.weddingDate}
           heroImageKey={settings.heroImageKey}
-          galleryPhotos={galleryPhotos}
         />
         <Suspense>
           <GiftList initialGifts={giftDTOs} categories={categories} />
