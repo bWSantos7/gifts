@@ -8,10 +8,6 @@ export const reserveGiftSchema = z.object({
   name: z.string().trim().min(2, "Informe seu nome completo").max(80),
 });
 
-export const fetchProductSchema = z.object({
-  url: z.string().trim().url("Informe um link válido"),
-});
-
 export const giftSchema = z.object({
   name: z.string().trim().min(1, "Nome é obrigatório").max(120),
   description: z.string().trim().max(500).optional().or(z.literal("")),

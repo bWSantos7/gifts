@@ -46,53 +46,6 @@ export function GiftForm({
   );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [fetching, setFetching] = useState(false);
-  const [fetchError, setFetchError] = useState<string | null>(null);
-
-  async function handleFetchProduct() {
-    if (!values.purchaseUrl) {
-      setFetchError("Cole o link do produto primeiro.");
-      return;
-    }
-    setFetching(true);
-    setFetchError(null);
-
-    try {
-      const res = await fetch("/api/admin/fetch-product", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: values.purchaseUrl }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setFetchError(data.error ?? "Não foi possível ler os dados deste link.");
-        return;
-      }
-
-      setValues((v) => ({
-        ...v,
-        name: data.name || v.name,
-        price: data.price !== null && data.price !== undefined ? String(data.price) : v.price,
-        storeName: STORE_OPTIONS.includes(data.storeName) ? data.storeName : v.storeName,
-        imageKey: data.imageKey || v.imageKey,
-      }));
-
-      const missing: string[] = [];
-      if (!data.name) missing.push("nome");
-      if (!data.imageKey) missing.push("foto");
-      if (!data.price) missing.push("valor");
-
-      if (missing.length > 0) {
-        setFetchError(
-          `Não encontramos automaticamente: ${missing.join(", ")}. Preencha o que faltar manualmente.`
-        );
-      }
-    } catch {
-      setFetchError("Não foi possível ler os dados deste link.");
-    } finally {
-      setFetching(false);
-    }
-  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -131,33 +84,6 @@ export function GiftForm({
 
   return (
     <form onSubmit={handleSubmit} className="max-w-xl space-y-5">
-      <div>
-        <Label htmlFor="purchaseUrl">Link de compra</Label>
-        <div className="flex gap-2">
-          <Input
-            id="purchaseUrl"
-            type="url"
-            required
-            placeholder="Cole o link do produto (Mercado Livre, Amazon, Shopee…)"
-            value={values.purchaseUrl}
-            onChange={(e) => setValues((v) => ({ ...v, purchaseUrl: e.target.value }))}
-          />
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleFetchProduct}
-            disabled={fetching}
-            className="shrink-0 whitespace-nowrap"
-          >
-            {fetching ? "Buscando…" : "Buscar dados"}
-          </Button>
-        </div>
-        <p className="mt-1 text-xs text-ink/50">
-          Buscamos foto, nome e valor automaticamente a partir do link. Confira sempre antes de salvar.
-        </p>
-        {fetchError && <p className="mt-1 text-sm text-wine-700">{fetchError}</p>}
-      </div>
-
       <ImageUploader
         folder="gifts"
         label="Foto do presente"
@@ -217,6 +143,17 @@ export function GiftForm({
 
       <div className="grid grid-cols-2 gap-4">
         <div>
+          <Label htmlFor="purchaseUrl">Link de compra</Label>
+          <Input
+            id="purchaseUrl"
+            type="url"
+            required
+            placeholder="https://…"
+            value={values.purchaseUrl}
+            onChange={(e) => setValues((v) => ({ ...v, purchaseUrl: e.target.value }))}
+          />
+        </div>
+        <div>
           <Label htmlFor="storeName">Loja</Label>
           <select
             id="storeName"
@@ -232,18 +169,19 @@ export function GiftForm({
             ))}
           </select>
         </div>
-        <div>
-          <Label htmlFor="audience">Lista</Label>
-          <select
-            id="audience"
-            value={values.audience}
-            onChange={(e) => setValues((v) => ({ ...v, audience: e.target.value as GiftAudience }))}
-            className="w-full rounded-lg border border-wine-100 bg-white px-4 py-2.5 focus:border-wine-500 focus:outline-none focus:ring-2 focus:ring-wine-500/20"
-          >
-            <option value="GUESTS">Convidados</option>
-            <option value="GODPARENTS">Padrinhos</option>
-          </select>
-        </div>
+      </div>
+
+      <div>
+        <Label htmlFor="audience">Lista</Label>
+        <select
+          id="audience"
+          value={values.audience}
+          onChange={(e) => setValues((v) => ({ ...v, audience: e.target.value as GiftAudience }))}
+          className="w-full rounded-lg border border-wine-100 bg-white px-4 py-2.5 focus:border-wine-500 focus:outline-none focus:ring-2 focus:ring-wine-500/20"
+        >
+          <option value="GUESTS">Convidados</option>
+          <option value="GODPARENTS">Padrinhos</option>
+        </select>
       </div>
 
       <label className="flex items-center gap-2 text-sm text-ink/80">
