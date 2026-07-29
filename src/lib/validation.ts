@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const STORE_OPTIONS = ["Mercado Livre", "Amazon", "Shein", "Shopee", "Outros"] as const;
 
-export const GIFT_AUDIENCES = ["GUESTS", "GODPARENTS"] as const;
+export const GIFT_AUDIENCES = ["GUESTS", "GODPARENTS", "BOTH"] as const;
 
 export const reserveGiftSchema = z.object({
   name: z.string().trim().min(2, "Informe seu nome completo").max(80),

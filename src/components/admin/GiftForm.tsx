@@ -181,6 +181,7 @@ export function GiftForm({
         >
           <option value="GUESTS">Convidados</option>
           <option value="GODPARENTS">Padrinhos</option>
+          <option value="BOTH">Ambos (Convidados e Padrinhos)</option>
         </select>
       </div>
 

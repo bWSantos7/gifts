@@ -24,6 +24,7 @@ model Admin {
 enum GiftAudience {
   GUESTS
   GODPARENTS
+  BOTH
 }
 
 model Category {

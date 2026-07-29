@@ -21,15 +21,17 @@ type GiftRow = {
 const AUDIENCE_LABEL: Record<GiftAudience, string> = {
   GUESTS: "Convidados",
   GODPARENTS: "Padrinhos",
+  BOTH: "Ambos",
 };
 
 export function GiftsTable({ gifts }: { gifts: GiftRow[] }) {
   const router = useRouter();
   const [pendingId, setPendingId] = useState<string | null>(null);
-  const [filter, setFilter] = useState<"ALL" | GiftAudience>("ALL");
+  const [filter, setFilter] = useState<"ALL" | "GUESTS" | "GODPARENTS">("ALL");
 
   const filtered = useMemo(
-    () => (filter === "ALL" ? gifts : gifts.filter((g) => g.audience === filter)),
+    () =>
+      filter === "ALL" ? gifts : gifts.filter((g) => g.audience === filter || g.audience === "BOTH"),
     [gifts, filter]
   );
 
@@ -52,7 +54,7 @@ export function GiftsTable({ gifts }: { gifts: GiftRow[] }) {
     router.refresh();
   }
 
-  const tabs: { key: "ALL" | GiftAudience; label: string }[] = [
+  const tabs: { key: "ALL" | "GUESTS" | "GODPARENTS"; label: string }[] = [
     { key: "ALL", label: "Todos" },
     { key: "GUESTS", label: "Convidados" },
     { key: "GODPARENTS", label: "Padrinhos" },

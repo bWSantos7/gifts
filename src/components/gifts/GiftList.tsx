@@ -49,7 +49,7 @@ export function GiftList({
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return gifts.filter((gift) => {
-      if (gift.audience !== audience) return false;
+      if (gift.audience !== audience && gift.audience !== "BOTH") return false;
       if (category && gift.categorySlug !== category) return false;
       if (onlyFavorites && !isFavorite(gift.id)) return false;
       if (q && !gift.name.toLowerCase().includes(q) && !gift.description?.toLowerCase().includes(q)) {

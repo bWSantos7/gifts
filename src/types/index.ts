@@ -1,4 +1,4 @@
-export type GiftAudience = "GUESTS" | "GODPARENTS";
+export type GiftAudience = "GUESTS" | "GODPARENTS" | "BOTH";
 
 export type GiftDTO = {
   id: string;
