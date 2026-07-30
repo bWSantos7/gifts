@@ -35,7 +35,6 @@ export async function POST(request: Request) {
       purchaseUrl: parsed.data.purchaseUrl,
       storeName: parsed.data.storeName || null,
       categoryId: parsed.data.categoryId,
-      audience: parsed.data.audience ?? "GUESTS",
       order: parsed.data.order ?? 0,
       isActive: parsed.data.isActive ?? true,
     },

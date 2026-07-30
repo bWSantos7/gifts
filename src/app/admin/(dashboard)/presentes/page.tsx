@@ -28,7 +28,6 @@ export default async function AdminGiftsPage() {
           imageKey: g.imageKey,
           price: g.price ? g.price.toString() : null,
           isActive: g.isActive,
-          audience: g.audience,
           category: { name: g.category.name },
           reservedByName: g.reservedByName,
         }))}

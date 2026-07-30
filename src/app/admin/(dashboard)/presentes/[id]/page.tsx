@@ -26,7 +26,6 @@ export default async function EditGiftPage({ params }: { params: Promise<{ id: s
             purchaseUrl: gift.purchaseUrl,
             storeName: gift.storeName ?? "",
             categoryId: gift.categoryId,
-            audience: gift.audience,
             isActive: gift.isActive,
           }}
         />

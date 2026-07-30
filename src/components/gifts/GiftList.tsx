@@ -5,12 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useFavorites } from "@/lib/favorites";
 import { GiftFilters } from "@/components/gifts/GiftFilters";
 import { GiftCard } from "@/components/gifts/GiftCard";
-import { AudienceToggle } from "@/components/gifts/AudienceToggle";
-import type { CategoryDTO, GiftAudience, GiftDTO } from "@/types";
-
-function audienceFromParam(value: string | null): GiftAudience {
-  return value === "padrinhos" ? "GODPARENTS" : "GUESTS";
-}
+import type { CategoryDTO, GiftDTO } from "@/types";
 
 export function GiftList({
   initialGifts,
@@ -24,7 +19,6 @@ export function GiftList({
   const { isFavorite } = useFavorites();
 
   const [gifts, setGifts] = useState(initialGifts);
-  const [audience, setAudience] = useState<GiftAudience>(audienceFromParam(searchParams.get("lista")));
   const [category, setCategory] = useState<string | null>(searchParams.get("categoria"));
   const [query, setQuery] = useState(searchParams.get("q") ?? "");
   const [onlyFavorites, setOnlyFavorites] = useState(false);
@@ -32,13 +26,12 @@ export function GiftList({
 
   useEffect(() => {
     const params = new URLSearchParams();
-    if (audience === "GODPARENTS") params.set("lista", "padrinhos");
     if (category) params.set("categoria", category);
     if (query) params.set("q", query);
     const search = params.toString();
     router.replace(search ? `/?${search}#presentes` : "/#presentes", { scroll: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [audience, category, query]);
+  }, [category, query]);
 
   useEffect(() => {
     if (!highlightedId) return;
@@ -49,7 +42,6 @@ export function GiftList({
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return gifts.filter((gift) => {
-      if (gift.audience !== audience && gift.audience !== "BOTH") return false;
       if (category && gift.categorySlug !== category) return false;
       if (onlyFavorites && !isFavorite(gift.id)) return false;
       if (q && !gift.name.toLowerCase().includes(q) && !gift.description?.toLowerCase().includes(q)) {
@@ -57,7 +49,7 @@ export function GiftList({
       }
       return true;
     });
-  }, [gifts, audience, category, query, onlyFavorites, isFavorite]);
+  }, [gifts, category, query, onlyFavorites, isFavorite]);
 
   function handleReserved(giftId: string, name: string) {
     setGifts((prev) =>
@@ -82,10 +74,6 @@ export function GiftList({
           Escolha um presente e clique em &ldquo;Comprar&rdquo; para ser levado até a loja. Se preferir,
           avise que vai dar aquele presente para que os demais convidados saibam.
         </p>
-      </div>
-
-      <div className="mt-8 flex justify-center">
-        <AudienceToggle value={audience} onChange={setAudience} />
       </div>
 
       <div className="mt-8">

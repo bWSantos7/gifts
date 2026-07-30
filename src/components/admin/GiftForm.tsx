@@ -6,7 +6,7 @@ import { Input, Label, Textarea } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { ImageUploader } from "@/components/admin/ImageUploader";
 import { STORE_OPTIONS } from "@/lib/validation";
-import type { CategoryDTO, GiftAudience } from "@/types";
+import type { CategoryDTO } from "@/types";
 
 type GiftFormValues = {
   id?: string;
@@ -17,7 +17,6 @@ type GiftFormValues = {
   purchaseUrl: string;
   storeName: string;
   categoryId: string;
-  audience: GiftAudience;
   isActive: boolean;
 };
 
@@ -40,7 +39,6 @@ export function GiftForm({
       purchaseUrl: "",
       storeName: "",
       categoryId: categories[0]?.id ?? "",
-      audience: "GUESTS",
       isActive: true,
     }
   );
@@ -60,7 +58,6 @@ export function GiftForm({
       purchaseUrl: values.purchaseUrl,
       storeName: values.storeName,
       categoryId: values.categoryId,
-      audience: values.audience,
       isActive: values.isActive,
     };
 
@@ -169,20 +166,6 @@ export function GiftForm({
             ))}
           </select>
         </div>
-      </div>
-
-      <div>
-        <Label htmlFor="audience">Lista</Label>
-        <select
-          id="audience"
-          value={values.audience}
-          onChange={(e) => setValues((v) => ({ ...v, audience: e.target.value as GiftAudience }))}
-          className="w-full rounded-lg border border-wine-100 bg-white px-4 py-2.5 focus:border-wine-500 focus:outline-none focus:ring-2 focus:ring-wine-500/20"
-        >
-          <option value="GUESTS">Convidados</option>
-          <option value="GODPARENTS">Padrinhos</option>
-          <option value="BOTH">Ambos (Convidados e Padrinhos)</option>
-        </select>
       </div>
 
       <label className="flex items-center gap-2 text-sm text-ink/80">
