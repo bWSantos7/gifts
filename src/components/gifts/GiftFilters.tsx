@@ -1,12 +1,15 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { PRICE_RANGES } from "@/lib/price-ranges";
 import type { CategoryDTO } from "@/types";
 
 export function GiftFilters({
   categories,
   activeCategory,
   onCategoryChange,
+  priceRange,
+  onPriceRangeChange,
   query,
   onQueryChange,
   onlyFavorites,
@@ -15,6 +18,8 @@ export function GiftFilters({
   categories: CategoryDTO[];
   activeCategory: string | null;
   onCategoryChange: (slug: string | null) => void;
+  priceRange: string;
+  onPriceRangeChange: (key: string) => void;
   query: string;
   onQueryChange: (value: string) => void;
   onlyFavorites: boolean;
@@ -84,6 +89,25 @@ export function GiftFilters({
         >
           ♥ Favoritos
         </button>
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-xs font-medium uppercase tracking-wide text-ink/40">Valor</span>
+        {PRICE_RANGES.map((range) => (
+          <button
+            key={range.key}
+            onClick={() => onPriceRangeChange(range.key)}
+            aria-pressed={priceRange === range.key}
+            className={cn(
+              "rounded-full border px-4 py-1.5 text-sm font-medium transition-colors",
+              priceRange === range.key
+                ? "border-wine-500 bg-wine-500 text-white"
+                : "border-wine-100 text-ink/70 hover:border-wine-500 hover:text-wine-500"
+            )}
+          >
+            {range.label}
+          </button>
+        ))}
       </div>
     </div>
   );

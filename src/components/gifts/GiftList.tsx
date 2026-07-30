@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useFavorites } from "@/lib/favorites";
 import { GiftFilters } from "@/components/gifts/GiftFilters";
 import { GiftCard } from "@/components/gifts/GiftCard";
+import { priceMatchesRange } from "@/lib/price-ranges";
 import type { CategoryDTO, GiftDTO } from "@/types";
 
 export function GiftList({
@@ -20,6 +21,7 @@ export function GiftList({
 
   const [gifts, setGifts] = useState(initialGifts);
   const [category, setCategory] = useState<string | null>(searchParams.get("categoria"));
+  const [priceRange, setPriceRange] = useState(searchParams.get("faixa") ?? "all");
   const [query, setQuery] = useState(searchParams.get("q") ?? "");
   const [onlyFavorites, setOnlyFavorites] = useState(false);
   const highlightedId = searchParams.get("presente");
@@ -27,11 +29,12 @@ export function GiftList({
   useEffect(() => {
     const params = new URLSearchParams();
     if (category) params.set("categoria", category);
+    if (priceRange !== "all") params.set("faixa", priceRange);
     if (query) params.set("q", query);
     const search = params.toString();
     router.replace(search ? `/?${search}#presentes` : "/#presentes", { scroll: false });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category, query]);
+  }, [category, priceRange, query]);
 
   useEffect(() => {
     if (!highlightedId) return;
@@ -43,13 +46,14 @@ export function GiftList({
     const q = query.trim().toLowerCase();
     return gifts.filter((gift) => {
       if (category && gift.categorySlug !== category) return false;
+      if (!priceMatchesRange(gift.price, priceRange)) return false;
       if (onlyFavorites && !isFavorite(gift.id)) return false;
       if (q && !gift.name.toLowerCase().includes(q) && !gift.description?.toLowerCase().includes(q)) {
         return false;
       }
       return true;
     });
-  }, [gifts, category, query, onlyFavorites, isFavorite]);
+  }, [gifts, category, priceRange, query, onlyFavorites, isFavorite]);
 
   function handleReserved(giftId: string, name: string) {
     setGifts((prev) =>
@@ -81,6 +85,8 @@ export function GiftList({
           categories={categories}
           activeCategory={category}
           onCategoryChange={setCategory}
+          priceRange={priceRange}
+          onPriceRangeChange={setPriceRange}
           query={query}
           onQueryChange={setQuery}
           onlyFavorites={onlyFavorites}
