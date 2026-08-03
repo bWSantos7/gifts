@@ -55,18 +55,12 @@ export function GiftList({
     });
   }, [gifts, category, priceRange, query, onlyFavorites, isFavorite]);
 
-  function handleReserved(giftId: string, name: string) {
-    setGifts((prev) =>
-      prev.map((g) =>
-        g.id === giftId ? { ...g, reservedByName: name, reservedAt: new Date().toISOString() } : g
-      )
-    );
+  function handleReserved(giftId: string) {
+    setGifts((prev) => prev.map((g) => (g.id === giftId ? { ...g, isReserved: true } : g)));
   }
 
   function handleCancelled(giftId: string) {
-    setGifts((prev) =>
-      prev.map((g) => (g.id === giftId ? { ...g, reservedByName: null, reservedAt: null } : g))
-    );
+    setGifts((prev) => prev.map((g) => (g.id === giftId ? { ...g, isReserved: false } : g)));
   }
 
   return (

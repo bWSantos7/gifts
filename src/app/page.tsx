@@ -51,8 +51,7 @@ export default async function HomePage() {
     categoryId: gift.categoryId,
     categoryName: gift.category.name,
     categorySlug: gift.category.slug,
-    reservedByName: gift.reservedByName,
-    reservedAt: gift.reservedAt ? gift.reservedAt.toISOString() : null,
+    isReserved: gift.reservedByName !== null,
   }));
 
   return (

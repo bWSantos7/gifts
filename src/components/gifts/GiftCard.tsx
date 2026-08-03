@@ -18,14 +18,14 @@ export function GiftCard({
 }: {
   gift: GiftDTO;
   highlighted?: boolean;
-  onReserved: (giftId: string, name: string) => void;
+  onReserved: (giftId: string) => void;
   onCancelled: (giftId: string) => void;
 }) {
   const [showModal, setShowModal] = useState(false);
   const [cancelling, setCancelling] = useState(false);
   const { isMine, markReserved, markCancelled } = useMyReservations();
 
-  const isReserved = Boolean(gift.reservedByName);
+  const isReserved = gift.isReserved;
   const canCancel = isReserved && isMine(gift.id);
 
   async function handleConfirmReserve(name: string): Promise<string | null> {
@@ -37,7 +37,7 @@ export function GiftCard({
     const data = await res.json();
     if (!res.ok) return data.error ?? "Não foi possível reservar este presente.";
 
-    onReserved(gift.id, data.reservedByName);
+    onReserved(gift.id);
     markReserved(gift.id);
     setShowModal(false);
     return null;
@@ -72,7 +72,7 @@ export function GiftCard({
         />
         {isReserved && (
           <div className="absolute inset-x-0 top-0 bg-wine-900/85 px-3 py-1.5 text-center text-xs font-medium text-gold">
-            Reservado por {gift.reservedByName}
+            Reservado
           </div>
         )}
         <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-[11px] font-medium uppercase tracking-wide text-wine-700">

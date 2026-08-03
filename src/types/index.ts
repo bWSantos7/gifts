@@ -11,8 +11,7 @@ export type GiftDTO = {
   categoryId: string;
   categoryName: string;
   categorySlug: string;
-  reservedByName: string | null;
-  reservedAt: string | null;
+  isReserved: boolean;
 };
 
 export type CategoryDTO = {
