@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { imageUrl } from "@/lib/utils";
-import { ImageUploader } from "@/components/admin/ImageUploader";
+import { MultiImageUploader } from "@/components/admin/MultiImageUploader";
 
 type PhotoRow = { id: string; imageKey: string; caption: string | null };
 
@@ -12,12 +12,14 @@ export function GalleryManager({ photos }: { photos: PhotoRow[] }) {
   const router = useRouter();
   const [pendingId, setPendingId] = useState<string | null>(null);
 
-  async function handleUpload(key: string) {
-    await fetch("/api/admin/gallery", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ imageKey: key, order: photos.length }),
-    });
+  async function handleUpload(keys: string[]) {
+    for (let i = 0; i < keys.length; i++) {
+      await fetch("/api/admin/gallery", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ imageKey: keys[i], order: photos.length + i }),
+      });
+    }
     router.refresh();
   }
 
@@ -30,7 +32,7 @@ export function GalleryManager({ photos }: { photos: PhotoRow[] }) {
 
   return (
     <div>
-      <ImageUploader folder="gallery" value={null} onChange={handleUpload} label="Adicionar foto" />
+      <MultiImageUploader folder="gallery" onUploaded={handleUpload} label="Adicionar fotos" />
 
       <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
         {photos.map((photo) => (
