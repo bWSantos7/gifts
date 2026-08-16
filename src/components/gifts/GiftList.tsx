@@ -70,7 +70,7 @@ export function GiftList({
         <h2 className="mt-3 font-display text-3xl text-wine-700 sm:text-4xl">Lista de presentes</h2>
         <p className="mx-auto mt-3 max-w-xl text-ink/60">
           Escolha um presente e clique em &ldquo;Comprar&rdquo; para ser levado até a loja. Se preferir,
-          avise que vai dar aquele presente para que os demais convidados saibam.
+          avise que vai dar aquele presente para que os demais convidados não o comprem também.
         </p>
       </div>
 
