@@ -10,9 +10,12 @@ export async function GET(_request: Request, { params }: { params: Promise<{ key
     const obj = await s3.send(getObjectCommand(key));
     if (!obj.Body) return new Response(null, { status: 404 });
 
-    return new Response(obj.Body.transformToWebStream(), {
+    const bytes = Buffer.from(await obj.Body.transformToByteArray());
+
+    return new Response(bytes, {
       headers: {
         "Content-Type": obj.ContentType ?? "application/octet-stream",
+        "Content-Length": String(bytes.byteLength),
         "Cache-Control": "public, max-age=31536000, immutable",
       },
     });
