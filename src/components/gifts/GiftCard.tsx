@@ -4,10 +4,11 @@ import Image from "next/image";
 import { useState } from "react";
 import { imageUrl, formatPrice } from "@/lib/utils";
 import { useMyReservations } from "@/lib/my-reservations";
-import { ButtonLink } from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { FavoriteButton } from "@/components/gifts/FavoriteButton";
 import { ShareButton } from "@/components/gifts/ShareButton";
 import { ReserveModal } from "@/components/gifts/ReserveModal";
+import { ShippingAddressModal } from "@/components/gifts/ShippingAddressModal";
 import type { GiftDTO } from "@/types";
 
 export function GiftCard({
@@ -22,6 +23,7 @@ export function GiftCard({
   onCancelled: (giftId: string) => void;
 }) {
   const [showModal, setShowModal] = useState(false);
+  const [showShippingModal, setShowShippingModal] = useState(false);
   const [cancelling, setCancelling] = useState(false);
   const { isMine, markReserved, markCancelled } = useMyReservations();
 
@@ -105,11 +107,13 @@ export function GiftCard({
               </span>
             )
           ) : (
-            <>
-              <ButtonLink href={gift.purchaseUrl} target="_blank" className="flex-1 justify-center">
-                Comprar{gift.storeName && gift.storeName !== "Outros" ? ` na ${gift.storeName}` : ""}
-              </ButtonLink>
-            </>
+            <Button
+              type="button"
+              className="flex-1 justify-center"
+              onClick={() => setShowShippingModal(true)}
+            >
+              Comprar{gift.storeName && gift.storeName !== "Outros" ? ` na ${gift.storeName}` : ""}
+            </Button>
           )}
           <FavoriteButton giftId={gift.id} />
           <ShareButton giftId={gift.id} giftName={gift.name} />
@@ -130,6 +134,16 @@ export function GiftCard({
           giftName={gift.name}
           onClose={() => setShowModal(false)}
           onConfirm={handleConfirmReserve}
+        />
+      )}
+
+      {showShippingModal && (
+        <ShippingAddressModal
+          onClose={() => setShowShippingModal(false)}
+          onContinue={() => {
+            setShowShippingModal(false);
+            window.open(gift.purchaseUrl, "_blank", "noopener,noreferrer");
+          }}
         />
       )}
     </div>
